@@ -35,6 +35,7 @@ class TLBcache{
 	public TlbEntry getEntry(String HexVirtualPageNo){
 		int vmPageNo;
 		for(TlbEntry x:TLB){
+			HexVirtualPageNo = HexVirtualPageNo.substring(0, 2);
 			vmPageNo = Integer.parseInt(HexVirtualPageNo,16);
 			if(vmPageNo == x.getVirtualPage()){
 				return x;
