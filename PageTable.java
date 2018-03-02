@@ -1,5 +1,5 @@
 class PageTable {
-	PageTableEntry[] PT;
+	public PageTableEntry[] PT;
 
 	public PageTable(int size) {
 		PT = new PageTableEntry[size];
@@ -9,8 +9,8 @@ class PageTable {
 		PT = new PageTableEntry[256];
 	}
 
-	public int getEntry(int pagenumber) {
-		return PT[pagenumber].getPageframe();
+	public PageTableEntry getEntry(int pagenumber) {
+		return PT[pagenumber];
 	}
 
 	public boolean checkEntry(int pagenumber) {

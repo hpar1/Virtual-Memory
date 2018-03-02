@@ -8,7 +8,7 @@ class TLBcache{
 			return virtualpage;
 		}
 	}
-	TlbEntry[] TLB;
+	public TlbEntry[] TLB;
 	public TLBcache(int size){
 		TLB = new TlbEntry[size];
 	}
@@ -19,14 +19,14 @@ class TLBcache{
 		TLB[EntryNumber].writeEntry(HexFrameNumber);
 		TLB[EntryNumber].setVirtualPage(HexVirtualPageNo);
 	}
-	public int getEntry(String HexVirtualPageNo){
+	public TlbEntry getEntry(String HexVirtualPageNo){
 		int vmPageNo;
 		for(TlbEntry x:TLB){
 			vmPageNo = Integer.parseInt(HexVirtualPageNo,16);
 			if(vmPageNo == x.getVirtualPage()){
-				return x.getPageframe();
+				return x;
 			}
 		}
-		return -1;
+		return null;
 	}
 }
