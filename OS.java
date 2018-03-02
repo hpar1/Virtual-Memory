@@ -22,7 +22,11 @@ public class OS {
     public static void main(String[] args) throws IOException {
         // to test that Copying is happening correctly
         OS op = new OS();
+        PageTable p = new PageTable();
+        TLBcache tl = new TLBcache();
+        op.resetRef(p, tl);
         System.out.println(op);
+        //System.out.println(tl.TLB[0]);
 
         // if(pfolder.isDirectory())
         //     System.out.println("Got IT!!!");
@@ -64,12 +68,14 @@ public class OS {
     }
 
     // reset reference bits must pass in Page Table and TLB
-    public void resetRef(PageTable pt, TLBcache t) {
+    public void resetRef(PageTable p, TLBcache t) {
+        //System.out.println(p.PT[0].getDirty());
         for (int i = 0; i < t.TLB.length; i++) {
-            t.TLB[i].resetReference();
+             t.TLB[i].resetReference();
+        // System.out.println(i);
         }
-        for (int j = 0; j < pt.PT.length; j++) {
-            pt.PT[j].resetReference();
+        for (int j = 0; j < p.PT.length; j++) {
+             p.PT[j].resetReference();
         }
     }
 }
