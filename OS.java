@@ -23,7 +23,9 @@ public class OS {
         // to test that Copying is happening correctly
         OS op = new OS();
         PageTable p = new PageTable();
+
         TLBcache tl = new TLBcache();
+        //System.out.println(p.getEntry(1));
         op.resetRef(p, tl);
         System.out.println(op);
         //System.out.println(tl.TLB[0]);
@@ -69,13 +71,13 @@ public class OS {
 
     // reset reference bits must pass in Page Table and TLB
     public void resetRef(PageTable p, TLBcache t) {
-        //System.out.println(p.PT[0].getDirty());
-        for (int i = 0; i < t.TLB.length; i++) {
-             t.TLB[i].resetReference();
+        // System.out.println(p.PT[0].getDirty());
+        for (int i = 0; i < t.length; i++) {
+             t.getEntry(i).resetReference();
         // System.out.println(i);
         }
-        for (int j = 0; j < p.PT.length; j++) {
-             p.PT[j].resetReference();
+        for (int j = 0; j < p.length; j++) {
+             p.getEntry(j).resetReference();
         }
     }
 }

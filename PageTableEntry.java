@@ -3,7 +3,12 @@ class PageTableEntry {
 	private int reference = 0;
 	private int dirty = 0;
 	private int pageframe;
-
+	public PageTableEntry(){
+		valid = 0;
+		reference = 0;
+		dirty = 0;
+		pageframe = 0;
+	}
 	public void writeEntry(String Hexframenumber) {
 		Hexframenumber = Hexframenumber.substring(0, 2); // to ignore offset
 		pageframe = Integer.parseInt(Hexframenumber, 16);
