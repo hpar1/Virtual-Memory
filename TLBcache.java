@@ -11,7 +11,7 @@ class TLBcache{
 			return virtualpage;
 		}
 	}
-	public static TlbEntry[] TLB;
+	public TlbEntry[] TLB;
 	public int length = 8;
 	public TLBcache(int size){
 		TLB = new TlbEntry[size];
