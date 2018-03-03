@@ -42,7 +42,7 @@ public class MMU{
 
   }
 
-  public int write(String address, int value){
+  public int[] write(String address, int value){
     String virtualPageNumber = address.substring(0, 2);
     int index = Integer.parseInt(virtualPageNumber, 16);
 
@@ -65,7 +65,8 @@ public class MMU{
     else{
       type = 2;
     }
-    return type;
+    int[] a = {type};
+    return a;
 
   }
 
