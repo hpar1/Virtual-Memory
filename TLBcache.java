@@ -31,6 +31,9 @@ class TLBcache{
 			TLB[i] = new TlbEntry();
 		}
 	}
+	public boolean checkfull(){
+		return full;
+	}
 	private void makefull(){
 		if(EntryNumber == length)
 			full = true;
