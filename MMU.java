@@ -1,11 +1,13 @@
-pubic class MMU{
+public class MMU{
 
   private PhysicalMemory mem;
   private TLBcache tlb;
   private PageTable pt;
 
-  public MMU(PhysicalMemory mem, ){
-
+  public MMU(PhysicalMemory mem){
+    this.mem = mem;
+    tlb = new TLBcache();
+    pt = new PageTable();
   }
 
   public int[] read(String address){
@@ -28,6 +30,7 @@ pubic class MMU{
     else if (pt.checkValid(index)){
       type = 1;
       data = Integer.parseInt(mem.getMemory(vpt.getEntry(index).getPageframe());
+      //update tlb
     }
     //hard
     else{
@@ -55,7 +58,7 @@ pubic class MMU{
     else if (pt.checkValid(index)){
       type = 1;
       mem.writeMemory(vpt.getEntry(index).getPageframe(), offset, value);
-
+      //update tlb
     }
     //hard
     else{
