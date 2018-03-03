@@ -21,14 +21,12 @@ pubic class MMU{
     //hit
     if(tlb.getEntry(virtualPageNumber)){
       type = 0;
-      int pgnum = tlb.getEntry(virtualPageNumber).getPageframe();
+      int pgFrameNum = tlb.getEntry(virtualPageNumber).getPageframe();
       data = Integer.parseInt(mem.getMemory(pgFrameNum, offset));
-      //UPDATE THE number of hit values by one
     }
     //soft
     else if (pt.checkValid(index)){
       type = 1;
-      //UPDATE SOFT MISS counter
       data = Integer.parseInt(mem.getMemory(vpt.getEntry(index).getPageframe());
     }
     //hard
@@ -46,7 +44,25 @@ pubic class MMU{
 
     String hex = address.substring(2);
     int offset = Integer.parseInt(hex, 16);
-     
+    //hit
+    if(tlb.getEntry(virtualPageNumber)){
+      type = 0;
+      int pgFrameNum = tlb.getEntry(virtualPageNumber).getPageframe();
+      mem.writeMemory(pgFrameNum, offset, value);
+
+    }
+    //soft
+    else if (pt.checkValid(index)){
+      type = 1;
+      mem.writeMemory(vpt.getEntry(index).getPageframe(), offset, value);
+
+    }
+    //hard
+    else{
+      type = 2;
+    }
+    return type;
+
   }
 
 }
