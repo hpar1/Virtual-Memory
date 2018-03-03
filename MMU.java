@@ -1,14 +1,15 @@
 public class MMU{
 
   private PhysicalMemory mem;
-  private TLBcache tlb;
+  public TLBcache tlb;
   private PageTable pt;
 
-  public MMU(PhysicalMemory mem){
+  public MMU(PhysicalMemory mem, Page Table pt){
     this.mem = mem;
     tlb = new TLBcache();
-    pt = new PageTable();
+    this.pt = pt;
   }
+
 
   public int[] read(String address){
 
