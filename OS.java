@@ -29,14 +29,14 @@ public class OS {
         // to test that Copying is happening correctly
         OS op = new OS();
 
-        PageTable p = new PageTable();
-        TLBcache tl = new TLBcache();
-        System.out.println(tl.getEntry(0).getReference());
-        tl.getEntry(0).setReference();
-        System.out.println(tl.getEntry(0).getReference());
-        op.resetRef(p, tl);
-        System.out.println(tl.getEntry(0).getReference());
-        System.out.println(op);
+        // PageTable p = new PageTable();
+        // TLBcache tl = new TLBcache();
+        // System.out.println(tl.getEntry(0).getReference());
+        // tl.getEntry(0).setReference();
+        // System.out.println(tl.getEntry(0).getReference());
+        // op.resetRef(p, tl);
+        // System.out.println(tl.getEntry(0).getReference());
+        // System.out.println(op);
 
         // if(pfolder.isDirectory())
         //     System.out.println("Got IT!!!");
@@ -78,7 +78,7 @@ public class OS {
     }
 
     // reset reference bits must pass in Page Table and TLB
-    public void resetRef(PageTable p, TLBcache t) {
+    public void resetRef() {
         // reset PageTable Reference bits
         for (int j = 0; j < p.length; j++) {
              p.getEntry(j).resetReference();
@@ -90,7 +90,7 @@ public class OS {
     }
 
     // clock replacement for page table
-    public int pageReplace(PageTable p, TLBcache t, int pageNum){
+    public int pageReplace(int pageNum){
         // reset R bit until an entry is found with R bit already == 0
         while(p.getEntry(pointer).getReference() == 1){
             p.getEntry(pointer).resetReference();
