@@ -4,7 +4,7 @@ public class MMU{
   public TLBcache tlb;
   private PageTable pt;
 
-  public MMU(PhysicalMemory mem, Page Table pt){
+  public MMU(PhysicalMemory mem, PageTable pt){
     this.mem = mem;
     tlb = new TLBcache();
     this.pt = pt;
@@ -30,7 +30,7 @@ public class MMU{
     //soft
     else if (pt.checkValid(index)){
       type = 1;
-      data = mem.getMemory(vpt.getEntry(index).getPageframe();
+      data = mem.getMemory(vpt.getEntry(index).getPageframe());
       //update tlb
     }
     //hard

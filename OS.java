@@ -10,13 +10,19 @@ import java.io.*;
 
 public class OS {
     public int pointer = 0; // ptr for page replacement
+    private PageTable p;
+    private TLB t;
+
     // constructor
-    public OS() throws IOException {
+    public OS(PageTable pt, TLB tlb) throws IOException {
         String fileSource = "OriginalPageFiles/";
         String destination = "EditedPageFiles/";
         File srcDir = new File(fileSource);
         File destDir = new File(destination);
         copyAll(srcDir, destDir);
+        // PageTable and TLB are passed in
+        p = pt;
+        t = tlb;
     }
 
     public static void main(String[] args) throws IOException {
@@ -84,12 +90,16 @@ public class OS {
     }
 
     // clock replacement for page table
-    public void pageReplace(PageTable p, TLBcache t){
+    public int pageReplace(PageTable p, TLBcache t, int pageNum){
+        // reset R bit until an entry is found with R bit already == 0
         while(p.getEntry(pointer).getReference() == 1){
             p.getEntry(pointer).resetReference();
-            for(int i=0; i<t.TLB.length;i++){
-
+            
+            if(t.getEntry(pointer) != null){
+                t.getEntry(pointer).resetReference();
             }
+            
+            // go to next page table entry
             if(pointer == p.PT.length-1){
                 pointer = 0;
             }
@@ -97,5 +107,8 @@ public class OS {
                 pointer++;
             }
         }
+        // if the page table at pointer already has (R bit == 0)
+        if(true){}
+        return 0; // CHANGE THIIS TO RETURN EVICTED PAGE
     }
 }
