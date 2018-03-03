@@ -26,6 +26,10 @@ class PageTable {
 		return check;
 	}
 
+	public boolean checkValid(int pagenumber){
+		return PT[pagenumber].checkValid() && PT[pagenumber].getDirty() == 0;
+	}
+
 	public void writeEntry(int pagenumber, String framenumber) {
 		PT[pagenumber].writeEntry(framenumber);
 	}
