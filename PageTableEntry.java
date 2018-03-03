@@ -7,7 +7,7 @@ class PageTableEntry {
 		valid = 0;
 		reference = 0;
 		dirty = 0;
-		pageframe = 0;
+		pageframe = -1;
 	}
 	public void writeEntry(String Hexframenumber) {
 		Hexframenumber = Hexframenumber.substring(0, 2); // to ignore offset
