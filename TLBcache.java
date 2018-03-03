@@ -43,6 +43,14 @@ class TLBcache{
 		}
 		return null;
 	}
+	public TlbEntry getEntryPageIndex(int PageTableIndex){
+		for(TlbEntry x:TLB){
+			if(PageTableIndex == x.getVirtualPage()){
+				return x;
+			}
+		}
+		return null;
+	}
 	public TlbEntry getEntry(int index){
 		return TLB[index];
 	}
