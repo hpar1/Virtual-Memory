@@ -1,5 +1,5 @@
 class PageTable {
-	public static PageTableEntry[] PT;
+	public PageTableEntry[] PT;
 	public int length = 256;
 	public PageTable(int size) {
 		PT = new PageTableEntry[size];

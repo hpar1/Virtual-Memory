@@ -9,7 +9,7 @@
 import java.io.*;
 
 public class OS {
-
+    public int pointer = 0; // ptr for page replacement
     // constructor
     public OS() throws IOException {
         String fileSource = "OriginalPageFiles/";
@@ -22,13 +22,15 @@ public class OS {
     public static void main(String[] args) throws IOException {
         // to test that Copying is happening correctly
         OS op = new OS();
-        PageTable p = new PageTable();
 
+        PageTable p = new PageTable();
         TLBcache tl = new TLBcache();
-        //System.out.println(p.getEntry(1));
+        System.out.println(tl.getEntry(0).getReference());
+        tl.getEntry(0).setReference();
+        System.out.println(tl.getEntry(0).getReference());
         op.resetRef(p, tl);
+        System.out.println(tl.getEntry(0).getReference());
         System.out.println(op);
-        //System.out.println(tl.TLB[0]);
 
         // if(pfolder.isDirectory())
         //     System.out.println("Got IT!!!");
@@ -71,13 +73,29 @@ public class OS {
 
     // reset reference bits must pass in Page Table and TLB
     public void resetRef(PageTable p, TLBcache t) {
-        // System.out.println(p.PT[0].getDirty());
-        for (int i = 0; i < t.length; i++) {
-             t.getEntry(i).resetReference();
-        // System.out.println(i);
-        }
+        // reset PageTable Reference bits
         for (int j = 0; j < p.length; j++) {
              p.getEntry(j).resetReference();
+        }
+        // reset TLB R bits
+        for (int i = 0; i < t.length; i++) {
+             t.getEntry(i).resetReference();
+        }
+    }
+
+    // clock replacement for page table
+    public void pageReplace(PageTable p, TLBcache t){
+        while(p.getEntry(pointer).getReference() == 1){
+            p.getEntry(pointer).resetReference();
+            for(int i=0; i<t.TLB.length;i++){
+
+            }
+            if(pointer == p.PT.length-1){
+                pointer = 0;
+            }
+            else{
+                pointer++;
+            }
         }
     }
 }
