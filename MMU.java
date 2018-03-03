@@ -25,12 +25,12 @@ public class MMU{
     if(tlb.getEntry(virtualPageNumber)){
       type = 0;
       int pgFrameNum = tlb.getEntry(virtualPageNumber).getPageframe();
-      data = Integer.parseInt(mem.getMemory(pgFrameNum, offset));
+      data = mem.getMemory(pgFrameNum, offset);
     }
     //soft
     else if (pt.checkValid(index)){
       type = 1;
-      data = Integer.parseInt(mem.getMemory(vpt.getEntry(index).getPageframe());
+      data = mem.getMemory(vpt.getEntry(index).getPageframe();
       //update tlb
     }
     //hard
