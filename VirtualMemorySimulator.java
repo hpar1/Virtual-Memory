@@ -23,17 +23,15 @@ public class VirtualMemorySimulator {
 	public void simulate(String inputFile, String outputFile) throws FileNotFoundException{
 		List<String[]> memoryAccessList = createMemoryAccessList(inputFile);
 		
-		/*
 		PageTable pt = new PageTable();
 		PhysicalMemory pm = new PhysicalMemory();
 		
-		OS os = new OS(pt);
+		OS os = new OS(pt,pm);
 		CPU cpu = new CPU(pm,pt,os);
 		
-		String[][] result = cpu.simulate(memoryAccessList);
+		List<String[]> results = cpu.simulate(memoryAccessList);
 		
-		outputResults(results, StringfileName);
-		*/
+		outputResults(results, outputFile);
 	}
 	
 	private List<String[]> createMemoryAccessList(String fileName) throws FileNotFoundException{
@@ -62,12 +60,12 @@ public class VirtualMemorySimulator {
 		return accessList;
 	}
 	
-	private void outputResults(String[][] results, String fileName) throws FileNotFoundException{
+	private void outputResults(List<String[]> results, String fileName) throws FileNotFoundException{
 		PrintWriter pw = new PrintWriter(new File(fileName));
 		pw.write("Address,r/w,value,soft,hard,hit,evicted_pg#,dirty_evicted_page\n");
 		
-		for (int i = 0; i < results.length;i++){
-			pw.write(String.join(",",results[i]));
+		for (int i = 0; i < results.size();i++){
+			pw.write(String.join(",",results.get(i)));
 		}
 	}
 }

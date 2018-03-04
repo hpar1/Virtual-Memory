@@ -21,7 +21,7 @@ public class CPU {
 		this.os = os;
 	}
 	
-	public void simulate(List<String[]> memoryAccessList){
+	public List<String[]> simulate(List<String[]> memoryAccessList){
 		
 		MMU mmu = new MMU(pm, pt);
 		List<String[]> results = new ArrayList();
@@ -30,7 +30,7 @@ public class CPU {
 		for (int i = 0; i < memoryAccessList.size(); i++) {
 			// reset page table ref bits every 20 accesses
 			if (i % 20 == 0) {
-				os.resetRef();
+				os.resetRef(mmu.tlb);
 			}
 			// 0 write, 1 read
 			String writeBit = memoryAccessList.get(i)[0];
