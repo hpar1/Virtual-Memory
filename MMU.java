@@ -22,7 +22,7 @@ public class MMU{
     int type;
 
     //hit
-    if(tlb.getEntry(virtualPageNumber)){
+    if(tlb.getEntry(virtualPageNumber) != null){
       type = 0;
       int pgFrameNum = tlb.getEntry(virtualPageNumber).getPageframe();
       data = mem.getMemory(pgFrameNum, offset);
@@ -30,7 +30,7 @@ public class MMU{
     //soft
     else if (pt.checkValid(index)){
       type = 1;
-      data = mem.getMemory(vpt.getEntry(index).getPageframe());
+      data = mem.getMemory(pt.getEntry(index).getPageframe(), offset);
       //update tlb
     }
     //hard
@@ -45,11 +45,12 @@ public class MMU{
   public int[] write(String address, int value){
     String virtualPageNumber = address.substring(0, 2);
     int index = Integer.parseInt(virtualPageNumber, 16);
+	int type;
 
     String hex = address.substring(2);
     int offset = Integer.parseInt(hex, 16);
     //hit
-    if(tlb.getEntry(virtualPageNumber)){
+    if(tlb.getEntry(virtualPageNumber) != null){
       type = 0;
       int pgFrameNum = tlb.getEntry(virtualPageNumber).getPageframe();
       mem.writeMemory(pgFrameNum, offset, value);
@@ -58,7 +59,7 @@ public class MMU{
     //soft
     else if (pt.checkValid(index)){
       type = 1;
-      mem.writeMemory(vpt.getEntry(index).getPageframe(), offset, value);
+      mem.writeMemory(pt.getEntry(index).getPageframe(), offset, value);
       //update tlb
     }
     //hard

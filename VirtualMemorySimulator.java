@@ -18,6 +18,8 @@ public class VirtualMemorySimulator {
 	}
 	
 	public void simulate(String inputFile, String outputFile) throws FileNotFoundException{
+		createPgFileCopies();
+		
 		String[][] memoryAccessList = createMemoryAccessList(inputFile);
 		
 		PageTable pt = new PageTable();
@@ -81,4 +83,41 @@ public class VirtualMemorySimulator {
 			pw.write(String.join(",",results[i]));
 		}
 	}
+	
+	private void createPgFileCopies() {
+        String fileSource = "OriginalPageFiles/";
+        String destination = "EditedPageFiles/";
+        File srcDir = new File(fileSource);
+        File destDir = new File(destination);
+        copyAll(srcDir, destDir);
+	}
+	
+    // Function to copy original files
+    private void copyAll(File sourceDir, File destDir) throws IOException {
+        if (sourceDir.isDirectory()) {
+            copyDir(sourceDir, destDir);
+        } else {
+            copyFile(sourceDir, destDir);
+        }
+    }
+    // copy directories
+    private void copyDir(File source, File target) throws IOException {
+        if (target.exists() != true) {
+            target.mkdir();
+        }
+        for (String s : source.list()) { // .list returns all of the file names in the directory
+            copyAll(new File(source, s), new File(target, s));
+        }
+    }
+    // copy files
+    private void copyFile(File source, File target) throws IOException {
+        // try catch finally so even if there is an exception buffer still closes
+        try (InputStream in = new FileInputStream(source); OutputStream out = new FileOutputStream(target);) {
+            byte[] b = new byte[1024]; // buffer to hold file contents for copying
+            int length;
+            while ((length = in.read(b)) > 0) { // keeps copying until end of file
+                out.write(b, 0, length);
+            }
+        }
+    }
 }

@@ -16,22 +16,12 @@ public class OS {
 
     // constructor
     public OS(PageTable pt, TLBcache tlb, PhysicalMemory m) throws IOException {
-        String fileSource = "OriginalPageFiles/";
-        String destination = "EditedPageFiles/";
-        File srcDir = new File(fileSource);
-        File destDir = new File(destination);
-        copyAll(srcDir, destDir);
         // PageTable and memory are passed in
         p = pt;
         mem = m;
     }
     // Default constructor for testing
     public OS() throws IOException {
-        String fileSource = "OriginalPageFiles/";
-        String destination = "EditedPageFiles/";
-        File srcDir = new File(fileSource);
-        File destDir = new File(destination);
-        copyAll(srcDir, destDir);
     }
 
     public static void main(String[] args) throws IOException {
@@ -56,35 +46,6 @@ public class OS {
         // for(File pfile: pfolder.listFiles()){
         //     System.out.println(pfile.getName());
         // }
-    }
-
-    // Function to copy original files
-    public void copyAll(File sourceDir, File destDir) throws IOException {
-        if (sourceDir.isDirectory()) {
-            copyDir(sourceDir, destDir);
-        } else {
-            copyFile(sourceDir, destDir);
-        }
-    }
-    // copy directories
-    private void copyDir(File source, File target) throws IOException {
-        if (target.exists() != true) {
-            target.mkdir();
-        }
-        for (String s : source.list()) { // .list returns all of the file names in the directory
-            copyAll(new File(source, s), new File(target, s));
-        }
-    }
-    // copy files
-    private void copyFile(File source, File target) throws IOException {
-        // try catch finally so even if there is an exception buffer still closes
-        try (InputStream in = new FileInputStream(source); OutputStream out = new FileOutputStream(target);) {
-            byte[] b = new byte[1024]; // buffer to hold file contents for copying
-            int length;
-            while ((length = in.read(b)) > 0) { // keeps copying until end of file
-                out.write(b, 0, length);
-            }
-        }
     }
 
     // reset reference bits must pass in Page Table and TLB

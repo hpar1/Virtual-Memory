@@ -39,21 +39,22 @@ public class CPU {
 			String value = memoryAccessList[i][2];
 			int intValue = Integer.parseInt(value);
 			
-			// [miss_status, response]
+			// [missStatus, response]
 			int[] response = (writeBit.equals("1"))? 
 					mmu.write(address, intValue) : mmu.read(address);
 			
 			// 0:hit, 1:soft, 2:hard
-			int miss_status = response[0];
-			if (miss_status == 2) {
-				os.addPage(mmu.tlb, address);
+			int missStatus = response[0];
+			String[] osResponse = {"XX", "0"};
+			if (missStatus == 2) {
+				osResponse = os.addPage(mmu.tlb, address);
 			}
 			
-			String soft = (miss_status == 0)? "1":"0";
-			String hard = (miss_status == 1)? "1":"0";
-			String hit = (miss_status == 2)? "1":"0";
-			String evicted_page = "?";
-			String dirty = "?";
+			String soft = (missStatus == 0)? "1":"0";
+			String hard = (missStatus == 1)? "1":"0";
+			String hit = (missStatus == 2)? "1":"0";
+			String evicted_page = osResponse[0];
+			String dirty = osResponse[1];
 			
 			results[i] = new String[] 
 					{address, writeBit, value, soft, hard, hit, evicted_page, dirty};
