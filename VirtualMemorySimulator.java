@@ -9,9 +9,6 @@
 
 import java.util.Scanner;
 import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class VirtualMemorySimulator {
 	
@@ -21,7 +18,7 @@ public class VirtualMemorySimulator {
 	}
 	
 	public void simulate(String inputFile, String outputFile) throws FileNotFoundException{
-		List<String[]> memoryAccessList = createMemoryAccessList(inputFile);
+		String[][] memoryAccessList = createMemoryAccessList(inputFile);
 		
 		PageTable pt = new PageTable();
 		PhysicalMemory pm = new PhysicalMemory();
@@ -34,14 +31,15 @@ public class VirtualMemorySimulator {
 		outputResults(results, outputFile);
 	}
 	
-	private List<String[]> createMemoryAccessList(String fileName) throws FileNotFoundException{
-		List<String[]> accessList = new ArrayList<String[]>();
-	
+	private String[][] createMemoryAccessList(String fileName) throws FileNotFoundException{
+		final int DEFAULT_MAX = 1000;
+		String[][] accessList = new String[DEFAULT_MAX][];
 		Scanner sc = new Scanner(new File(fileName));
+		
+		int i = 0;
 		while (sc.hasNext()){
 			String writeBit = sc.next();
 			String[] memoryAccess;
-			System.out.println(writeBit);
 			if (writeBit.equals("1")){
 				memoryAccess = new String[3];
 				memoryAccess[0] = writeBit;
@@ -54,18 +52,33 @@ public class VirtualMemorySimulator {
 				memoryAccess[1] = sc.next();
 			}
 			
-			accessList.add(memoryAccess);
+			accessList[i] = memoryAccess;
+			i++;
+			
+			if (i >= accessList.length){
+				accessList = resize2DArray(accessList, accessList.length*2); 
+			}
 		}
 		
-		return accessList;
+		return resize2DArray(accessList, i);
 	}
 	
-	private void outputResults(List<String[]> results, String fileName) throws FileNotFoundException{
+	private String[][] resize2DArray(String[][] arr, int newSize){
+		String[][] newArr = new String[newSize][];
+		
+		for (int i = 0; i < newSize; i++){
+			newArr[i] = arr[i];
+		}
+		
+		return newArr;
+	}
+	
+	private void outputResults(String[][] results, String fileName) throws FileNotFoundException{
 		PrintWriter pw = new PrintWriter(new File(fileName));
 		pw.write("Address,r/w,value,soft,hard,hit,evicted_pg#,dirty_evicted_page\n");
 		
-		for (int i = 0; i < results.size();i++){
-			pw.write(String.join(",",results.get(i)));
+		for (int i = 0; i < results.length;i++){
+			pw.write(String.join(",",results[i]));
 		}
 	}
 }

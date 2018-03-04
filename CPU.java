@@ -7,35 +7,36 @@
 *   Dimitri Pierre-Louis
 */
 
-import java.util.List;
-import java.util.ArrayList;
 
 public class CPU {
 	
-	PhysicalMemory pm;
-	PageTable pt;
-	OS os;
-	CPU(PhysicalMemory pm, PageTable pt, OS os){
+	private PhysicalMemory pm;
+	private PageTable pt;
+	private OS os;
+	private MMU mmu;
+	private final int R_BIT_RESET_CYCLE = 5;
+	
+	public CPU(PhysicalMemory pm, PageTable pt, OS os){
 		this.pm = pm;
 		this.pt = pt;
 		this.os = os;
+		this.mmu = new MMU(pm, pt);
 	}
 	
-	public List<String[]> simulate(List<String[]> memoryAccessList){
+	public String[][] simulate(String[][] memoryAccessList){
 		
-		MMU mmu = new MMU(pm, pt);
-		List<String[]> results = new ArrayList();
+		String[][] results = new String[memoryAccessList.length][];
 		// memoryAccessList: [access type, address, value]
 		
-		for (int i = 0; i < memoryAccessList.size(); i++) {
+		for (int i = 0; i < memoryAccessList.length; i++) {
 			// reset page table ref bits every 20 accesses
-			if (i % 20 == 0) {
+			if (i % R_BIT_RESET_CYCLE == 0) {
 				os.resetRef(mmu.tlb);
 			}
 			// 0 write, 1 read
-			String writeBit = memoryAccessList.get(i)[0];
-			String address = memoryAccessList.get(i)[1];
-			String value = memoryAccessList.get(i)[2];
+			String writeBit = memoryAccessList[i][0];
+			String address = memoryAccessList[i][1];
+			String value = memoryAccessList[i][2];
 			int intValue = Integer.parseInt(value);
 			
 			// [miss_status, response]
@@ -57,8 +58,10 @@ public class CPU {
 			String evicted_page = "?";
 			String dirty = "?";
 			
-			results.add(new String[] 
-					{address, writeBit, value, soft, hard, hit, evicted_page, dirty});
+			results[i] = new String[] 
+					{address, writeBit, value, soft, hard, hit, evicted_page, dirty};
 		}
+		
+		return results;
 	}
 }
