@@ -46,10 +46,7 @@ public class CPU {
 			// 0:hit, 1:soft, 2:hard
 			int miss_status = response[0];
 			if (miss_status == 2) {
-				// [FF]FF 
-				String frameNo = address.substring(0, 2);
-				int decFrameNo = Integer.parseInt(frameNo, 16);
-				os.pageReplace(mmu.tlb, decFrameNo);
+				os.addPage(mmu.tlb, address);
 			}
 			
 			String soft = (miss_status == 0)? "1":"0";

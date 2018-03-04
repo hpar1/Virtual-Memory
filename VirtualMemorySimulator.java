@@ -26,7 +26,7 @@ public class VirtualMemorySimulator {
 		OS os = new OS(pt,pm);
 		CPU cpu = new CPU(pm,pt,os);
 		
-		List<String[]> results = cpu.simulate(memoryAccessList);
+		String[][] results = cpu.simulate(memoryAccessList);
 		
 		outputResults(results, outputFile);
 	}
