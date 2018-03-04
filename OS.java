@@ -13,6 +13,7 @@ public class OS {
     public int pointer = 0; // ptr for page replacement
     private PageTable p;
     private PhysicalMemory mem;
+    private PrintWriter pw; // to write back to page file if there is a change
 
     // constructor
     public OS(PageTable pt, TLBcache tlb, PhysicalMemory m) throws IOException {
@@ -26,7 +27,7 @@ public class OS {
 
     public static void main(String[] args) throws IOException {
         // to test that Copying is happening correctly
-        OS op = new OS();
+        //OS op = new OS();
         //op.addPage("AA00");
 
         // PageTable p = new PageTable();
@@ -48,15 +49,15 @@ public class OS {
         // }
     }
 
-    // reset reference bits must pass in Page Table and TLB
+    // reset reference bits must pass in TLB
     public void resetRef(TLBcache t) {
         // reset PageTable Reference bits
         for (int j = 0; j < p.length; j++) {
-             p.getEntry(j).resetReference();
+            p.getEntry(j).resetReference();
         }
         // reset TLB R bits
         for (int i = 0; i < t.length; i++) {
-             t.getEntry(i).resetReference();
+            t.getEntry(i).resetReference();
         }
     }
 
@@ -76,16 +77,21 @@ public class OS {
         }
 
         if(mem.checkfull() == true){
-            pageReplace(t, pageNum);
+            pageReplace(t, frameNo);
         }
         else{
-            mem.writeMemory(pFile);
+            mem.writeMemory(pFile); // need to get back the index of array
         }
         sc.close();
+        return 0;// CHANGE THIS
     }
 
     // clock replacement for page table
-    private void pageReplace(TLBcache t, String pageNum){
+    private int[] pageReplace(TLBcache t, String frameNo){
+        int writeIndex = -1;
+        int evictedPage = -1;
+        int dirtySet = -1;
+        StringBuilder sb = new StringBuilder(); // new stringbuilder to store output
         // reset R bit until an entry is found with R bit already == 0
         while(p.getEntry(pointer).getReference() == 1){
             p.getEntry(pointer).resetReference();
@@ -101,8 +107,22 @@ public class OS {
                 pointer++;
             }
         }
-            // if the page table at pointer already has (R bit == 0) and (V bit == 1)
-        if(true){}   
+        // if the page table at pointer already has (R bit == 0) and (V bit == 1)
+        if(p.getEntry(pointer).getDirty() == 1){
+            pw = new PrintWriter(new File("EditedPageFiles/" + frameNo + ".pg")); // to overwrite the page file
+            sb.append(""); // add the whole array with \n
+            pw.write(sb.toString()); // write string builder to file
+            pw.close();
+            // FINISH THIS!!!!
+        }
+        else{
+            writeIndex = p.getEntry(pointer).getPageframe(); // the open index in RAM
+            dirtySet = 0; // dirty was not set
+            evictedPage = pointer;
+            p.PT[pointer] = new PageTableEntry(); // resets bits in Entry
+        }
+        int[] ret = {writeIndex, evictedPage, dirtySet};
+        return ret;
     }
-    
+
 }
