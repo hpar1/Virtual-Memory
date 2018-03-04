@@ -12,25 +12,32 @@ import java.util.Scanner;
 public class OS {
     public int pointer = 0; // ptr for page replacement
     private PageTable p;
-    private TLB t;
     private PhysicalMemory mem;
 
     // constructor
-    public OS(PageTable pt, TLB tlb, PhysicalMemory m) throws IOException {
+    public OS(PageTable pt, TLBcache tlb, PhysicalMemory m) throws IOException {
         String fileSource = "OriginalPageFiles/";
         String destination = "EditedPageFiles/";
         File srcDir = new File(fileSource);
         File destDir = new File(destination);
         copyAll(srcDir, destDir);
-        // PageTable and TLB are passed in
+        // PageTable and memory are passed in
         p = pt;
-        t = tlb;
         mem = m;
+    }
+    // Default constructor for testing
+    public OS() throws IOException {
+        String fileSource = "OriginalPageFiles/";
+        String destination = "EditedPageFiles/";
+        File srcDir = new File(fileSource);
+        File destDir = new File(destination);
+        copyAll(srcDir, destDir);
     }
 
     public static void main(String[] args) throws IOException {
         // to test that Copying is happening correctly
         OS op = new OS();
+        //op.addPage("AA00");
 
         // PageTable p = new PageTable();
         // TLBcache tl = new TLBcache();
@@ -81,7 +88,7 @@ public class OS {
     }
 
     // reset reference bits must pass in Page Table and TLB
-    public void resetRef() {
+    public void resetRef(TLBcache t) {
         // reset PageTable Reference bits
         for (int j = 0; j < p.length; j++) {
              p.getEntry(j).resetReference();
@@ -92,54 +99,49 @@ public class OS {
         }
     }
 
-    // clock replacement for page table
-    public int pageReplace(String pageNum){
-        // if Physical Memory is full
-        if(mem.checkFull() == true){// CHANGE THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // reset R bit until an entry is found with R bit already == 0
-            while(p.getEntry(pointer).getReference() == 1){
-                p.getEntry(pointer).resetReference();
-                // If page table entry is also in TLB reset its R bit
-                if(t.getEntry(pointer) != null){
-                    t.getEntry(pointer).resetReference();
-                }
-                // go to next page table entry
-                if(pointer == p.PT.length-1){
-                    pointer = 0;
-                }
-                else{
-                    pointer++;
-                }
-            }
-            // if the page table at pointer already has (R bit == 0) and (V bit == 1)
-            if(true){}
-            return 0; // CHANGE THIS TO RETURN EVICTED PAGE
-        }
-        else{
-            // Physical Memory is not FUll so add from Page File
-        }
-    }
-
     // Reads page file and puts it in Physical Memory
-    private void addPage(String pageNum){
+    public int addPage(TLBcache t, String pageNum) throws IOException{
         int[] pFile = new int[256];
         String frameNo = pageNum.substring(0, 2);
         String pageFile = "EditedPageFiles/" + frameNo + ".pg";
         Scanner sc = new Scanner(new File(pageFile));
         
         // read from .pg file and store in array
-        for(int i=0; i<pfile.length; i++){
+        for(int i=0; i<pFile.length; i++){
             if(sc.hasNextInt()){
                 pFile[i] = sc.nextInt();
+               // System.out.println(i + " "+ pFile[i]); // FOR TESTING
             }
         }
 
-        if(mem.checkfull()){
-
+        if(mem.checkfull() == true){
+            pageReplace(t, pageNum);
         }
         else{
-            
+            mem.writeMemory(pFile);
         }
-
+        sc.close();
     }
+
+    // clock replacement for page table
+    private void pageReplace(TLBcache t, String pageNum){
+        // reset R bit until an entry is found with R bit already == 0
+        while(p.getEntry(pointer).getReference() == 1){
+            p.getEntry(pointer).resetReference();
+            // If page table entry is also in TLB reset its R bit
+            if(t.getEntry(pointer) != null){
+                t.getEntry(pointer).resetReference();
+            }
+            // go to next page table entry
+            if(pointer == p.PT.length-1){
+                pointer = 0;
+            }
+            else{
+                pointer++;
+            }
+        }
+            // if the page table at pointer already has (R bit == 0) and (V bit == 1)
+        if(true){}   
+    }
+    
 }
