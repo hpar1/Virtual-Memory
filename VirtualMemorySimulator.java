@@ -12,14 +12,14 @@ import java.io.*;
 
 public class VirtualMemorySimulator {
 	
-	public static void main(String[] args) throws FileNotFoundException{
+	public static void main(String[] args) throws IOException{
 		VirtualMemorySimulator vm = new VirtualMemorySimulator();
 		String inputFile = args[0];
 		String outputFile = inputFile.substring(0,inputFile.indexOf(".")) + ".csv";
 		vm.simulate(inputFile, outputFile);
 	}
 	
-	public void simulate(String inputFile, String outputFile) throws FileNotFoundException{
+	public void simulate(String inputFile, String outputFile) throws IOException{
 		createPgFileCopies();
 		
 		String[][] memoryAccessList = createMemoryAccessList(inputFile);
@@ -79,7 +79,7 @@ public class VirtualMemorySimulator {
 		return newArr;
 	}
 	
-	private void outputResults(String[][] results, String fileName) throws FileNotFoundException{
+	private void outputResults(String[][] results, String fileName) throws IOException{
 		PrintWriter pw = new PrintWriter(new File(fileName));
 		pw.write("Address,r/w,value,soft,hard,hit,evicted_pg#,dirty_evicted_page\n");
 		
@@ -90,7 +90,7 @@ public class VirtualMemorySimulator {
 		pw.close();
 	}
 	
-	private void createPgFileCopies() {
+	private void createPgFileCopies() throws IOException{
         String fileSource = "OriginalPageFiles/";
         String destination = "EditedPageFiles/";
         File srcDir = new File(fileSource);

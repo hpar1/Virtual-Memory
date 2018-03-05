@@ -7,6 +7,7 @@
 *   Dimitri Pierre-Louis
 */
 
+import java.io.IOException;
 
 public class CPU {
 	
@@ -23,7 +24,7 @@ public class CPU {
 		this.mmu = new MMU(pm, pt);
 	}
 	
-	public String[][] simulate(String[][] memoryAccessList){
+	public String[][] simulate(String[][] memoryAccessList) throws IOException {
 		
 		String[][] results = new String[memoryAccessList.length][];
 		// memoryAccessList: [access type, address, value]
