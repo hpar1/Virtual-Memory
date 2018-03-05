@@ -42,9 +42,19 @@ public class CPU {
 			if(writeBit.equals("1"))
 				intValue = Integer.parseInt(value);
 			
+			// ADDED THIS BECAUSE TERNERY OP DIDN'T FUNCTION CORRECTLY
+			int[] response;
 			// [missStatus, response]
-			int[] response = (writeBit.equals("1"))? 
-					mmu.write(address, intValue) : mmu.read(address);
+			if(writeBit.equals("1")){
+				response = mmu.write(address, intValue);
+			}
+			else{
+				response = mmu.read(address);
+				value = Integer.toString(response[1]);
+			}
+			
+			//int[] response = (writeBit.equals("1"))? 
+			//		mmu.write(address, intValue) : mmu.read(address);
 			
 			// 0:hit, 1:soft, 2:hard
 			int missStatus = response[0];
