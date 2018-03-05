@@ -74,6 +74,7 @@ class TLBcache{
 		return TLB[index];
 	}
 	public void fifo(){
+
 		TlbEntry[] temp = new TlbEntry[length];
 		for(int i = 0;i < (length-1) ;i++){
 			temp[i] = TLB[i+1];
@@ -81,6 +82,7 @@ class TLBcache{
 		for(int i = 0;i < length;i++){
 			TLB[i]=temp[i];
 		}
+		TLB[length-1]= new TlbEntry();
 		EntryNumber = length-1;
 		full = false;
 	}
