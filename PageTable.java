@@ -20,6 +20,11 @@ class PageTable {
 	public PageTableEntry getEntry(int pagenumber) {
 		return PT[pagenumber];
 	}
+	public PageTableEntry getEntry(String Hexpagenumber){
+		String hexsubstring = Hexpagenumber.substring(0, 2);
+		int vmPageNo = Integer.parseInt(hexsubstring,16);
+		return PT[vmPageNo];
+	}
 
 	public boolean checkEntry(int pagenumber) {
 		boolean check = PT[pagenumber].checkValid();

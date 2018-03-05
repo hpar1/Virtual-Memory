@@ -15,6 +15,11 @@ class PageTableEntry {
 		valid = 1;
 		reference = 1;
 	}
+	public void writeEntry(int Intframenumber){
+		pageframe= Intframenumber;
+		valid = 1;
+		reference = 1;
+	}
 
 	public int getReference() {
 		return reference;
