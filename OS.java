@@ -37,8 +37,8 @@ public class OS {
     // Reads page file and puts it in Physical Memory
     public int[] addPage(TLBcache t, String pageNum) throws IOException{
         int[] pFile = new int[256];
-        String frameNo = pageNum.substring(0, 2);
-        String pageFile = "EditedPageFiles/" + frameNo + ".pg";
+        String vmPageNum = pageNum.substring(0, 2);
+        String pageFile = "EditedPageFiles/" + vmPageNum + ".pg";
         Scanner sc = new Scanner(new File(pageFile));
         int evictedPage = -1;
         int dirtySet = -1;
@@ -54,20 +54,20 @@ public class OS {
         sc.close();
 
         if(mem.checkfull() == true){
-            replace = pageReplace(t, frameNo);
+            replace = pageReplace(t, vmPageNum);
             mem.writeMemoryFULL(pFile, replace[0]);
-            p.getEntry(frameNo).writeEntry(replace[0]); // index written
+            p.getEntry(vmPageNum).writeEntry(replace[0]); // index written
             evictedPage = replace[1];
             dirtySet = replace[2];
-            if (t.getEntry(frameNo) != null) {
-                t.getEntry(frameNo).writeEntry(replace[0]); // update TLB entry
+            if (t.getEntry(vmPageNum) != null) {
+                t.getEntry(vmPageNum).writeEntry(replace[0]); // update TLB entry
             }
         }
         else{
             int temp = mem.writeMemory(pFile);
-            p.getEntry(frameNo).writeEntry(temp); // empty index written
-            if (t.getEntry(frameNo) != null) {
-                t.getEntry(frameNo).writeEntry(temp); // update TLB entry
+            p.getEntry(vmPageNum).writeEntry(temp); // empty index written
+            if (t.getEntry(vmPageNum) != null) {
+                t.getEntry(vmPageNum).writeEntry(temp); // update TLB entry
             }
         }
         
@@ -76,7 +76,7 @@ public class OS {
     }
 
     // clock replacement for page table
-    private int[] pageReplace(TLBcache t, String frameNo) throws IOException{
+    private int[] pageReplace(TLBcache t, String vmPageNum) throws IOException{
         int writeIndex = -1;
         int evictedPage = -1;
         int dirtySet = -1;
