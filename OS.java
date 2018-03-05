@@ -38,7 +38,7 @@ public class OS {
     public int[] addPage(TLBcache t, String pageNum) throws IOException{
         int[] pFile = new int[256];
         String vmPageNum = pageNum.substring(0, 2);
-        String pageFile = "EditedPageFiles/" + vmPageNum + ".pg";
+        String pageFile = "EditedPageFiles/" + vmPageNum + ".pg"; // to write back
         Scanner sc = new Scanner(new File(pageFile));
         int evictedPage = -1;
         int dirtySet = -1;
