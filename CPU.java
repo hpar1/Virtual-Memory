@@ -30,7 +30,7 @@ public class CPU {
 		// memoryAccessList: [access type, address, value]
 		
 		for (int i = 0; i < memoryAccessList.length; i++) {
-			// reset page table ref bits every 20 accesses
+			// reset page table ref bits every 5 accesses
 			if (i % R_BIT_RESET_CYCLE == 0) {
 				os.resetRef(mmu.tlb);
 			}

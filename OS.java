@@ -30,7 +30,7 @@ public class OS {
         }
         // reset TLB R bits
         for (int i = 0; i < t.length; i++) {
-            t.getEntry(i).resetReference();
+            t.getTlbEntry(i).resetReference();
         }
     }
 
