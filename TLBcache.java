@@ -69,6 +69,9 @@ class TLBcache{
 		}
 		return null;
 	}
+	public TlbEntry getTlbEntry(int index){
+		return TLB[index];
+	}
 	public void fifo(){
 		TlbEntry[] temp = new TlbEntry[length];
 		for(int i = 0;i < (length-1) ;i++){
