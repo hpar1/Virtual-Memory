@@ -44,7 +44,7 @@ class TLBcache{
 		EntryNumber++;
 		makefull();
 	}
-	public void writeTLBENtry(PageTableEntry pagetableentry,String HexVirtualPageNo){
+	public void writeTLBEntry(PageTableEntry pagetableentry,String HexVirtualPageNo){
 		TLB[EntryNumber] = (TlbEntry)pagetableentry;
 		TLB[EntryNumber].setVirtualPage(HexVirtualPageNo);
 		EntryNumber++;
@@ -61,7 +61,7 @@ class TLBcache{
 		}
 		return null;
 	}
-	public TlbEntry getEntryPageIndex(int IntVirtualPageNo){
+	public TlbEntry getEntry(int IntVirtualPageNo){
 		for(TlbEntry x:TLB){
 			if(IntVirtualPageNo == x.getVirtualPage()){
 				return x;
@@ -69,14 +69,12 @@ class TLBcache{
 		}
 		return null;
 	}
-	public TlbEntry getEntry(int index){
-		return TLB[index];
-	}
 	public void fifo(){
 		TlbEntry[] temp = new TlbEntry[length];
 		for(int i = 0;i < (length-1) ;i++){
 			temp[i] = TLB[i+1];
 		}
 		TLB = temp;
+		EntryNumber = length-1;
 	}
 }

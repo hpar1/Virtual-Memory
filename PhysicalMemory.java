@@ -16,7 +16,7 @@ class PhysicalMemory {
 	public boolean checkfull(){
 		return full;
 	}
-	public int writeMemory(int[] data){
+	public int writeMemory(int[] data){	//used by OS
 		writeMemoryFULL(data,counter);
 		counter++;
 		if(counter == pageamount){
@@ -24,16 +24,16 @@ class PhysicalMemory {
 		}
 		return counter-1;
 	}
-	public void writeMemoryFULL(int[] data,int index){
+	public void writeMemoryFULL(int[] data,int index){	//used by OS
 		for(int i= 0;i < 256;i++){
 			RAM[index][i]=data[i];
 		}
 	}
-	public void writeMemory(int PageNo, int line, int data) {
+	public void writeMemory(int PageNo, int line, int data) {	//used by MMU
 		RAM[PageNo][line] = data;
 	}
 
-	public int getMemory(int PageNo, int line) {
+	public int getMemory(int PageNo, int line) {	//used by MMU
 		return RAM[PageNo][line];
 	}
 }
