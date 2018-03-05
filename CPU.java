@@ -49,7 +49,7 @@ public class CPU {
 			// 0:hit, 1:soft, 2:hard
 			int missStatus = response[0];
 			int[] osResponse = {-1, 0};
-			System.out.println(missStatus);//////////////////////////////
+			
 			
 			// Scanner sc = new Scanner(System.in);
 			// sc.next();

@@ -128,10 +128,11 @@ public class OS {
         p.PT[pointer] = new PageTableEntry(); // resets bits in Entry
         
         if (t.getEntry(pointer) != null) {
-            t.getEntry(pointer).resetReference();
-            t.getEntry(pointer).resetDirty();
-            t.getEntry(pointer).resetvalid();
-            t.getEntry(pointer).resetpageframe();
+            // t.getEntry(pointer).resetReference();
+            // t.getEntry(pointer).resetDirty();
+            // t.getEntry(pointer).resetvalid();
+            // t.getEntry(pointer).resetpageframe();
+            t.TLB[pointer] = new TlbEntry();
         }
         
         // go to next page table entry
