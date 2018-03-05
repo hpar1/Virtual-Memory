@@ -35,7 +35,7 @@ public class MMU{
       if (tlb.checkfull() == true) {
         tlb.fifo();
       }
-      tlb.writeTLBEntry(pt.getEntry(index), virtualPageNumber); // update TLB
+      tlb.writeTLBEntry(pt.getEntry(index).getPageframe(), virtualPageNumber); // update TLB
     }
     //hard
     else{
@@ -43,7 +43,7 @@ public class MMU{
       if(tlb.checkfull() == true){
         tlb.fifo();
       }
-      tlb.writeTLBEntry(pt.getEntry(index), virtualPageNumber); // update TLB
+      tlb.writeTLBEntry(pt.getEntry(index).getPageframe(), virtualPageNumber); // update TLB
     }
     int[] a = {type, data};
     return a;
@@ -74,7 +74,7 @@ public class MMU{
       if (tlb.checkfull() == true) {
         tlb.fifo();
       }
-      tlb.writeTLBEntry(pt.getEntry(index), virtualPageNumber); // update TLB
+      tlb.writeTLBEntry(pt.getEntry(index).getPageframe(), virtualPageNumber); // update TLB
     }
     //hard
     else{
@@ -82,7 +82,7 @@ public class MMU{
       if (tlb.checkfull() == true) {
         tlb.fifo();
       }
-      tlb.writeTLBEntry(pt.getEntry(index), virtualPageNumber); // update TLB
+      tlb.writeTLBEntry(pt.getEntry(index).getPageframe(), virtualPageNumber); // update TLB
     }
     int[] a = {type};
     return a;
