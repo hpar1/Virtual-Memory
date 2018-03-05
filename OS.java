@@ -59,9 +59,16 @@ public class OS {
             p.getEntry(frameNo).writeEntry(replace[0]); // index written
             evictedPage = replace[1];
             dirtySet = replace[2];
+            if (t.getEntry(frameNo) != null) {
+                t.getEntry(frameNo).writeEntry(replace[0]); // update TLB entry
+            }
         }
         else{
-            p.getEntry(frameNo).writeEntry(mem.writeMemory(pFile)); // empty index written
+            int temp = mem.writeMemory(pFile);
+            p.getEntry(frameNo).writeEntry(temp); // empty index written
+            if (t.getEntry(frameNo) != null) {
+                t.getEntry(frameNo).writeEntry(temp); // update TLB entry
+            }
         }
         
         int[] ret = {evictedPage, dirtySet};
@@ -123,7 +130,8 @@ public class OS {
         if (t.getEntry(pointer) != null) {
             t.getEntry(pointer).resetReference();
             t.getEntry(pointer).resetDirty();
-            //t.getEntry(pointer).resetValid();
+            t.getEntry(pointer).resetvalid();
+            t.getEntry(pointer).resetpageframe();
         }
 
         pointer++; // iterate pointer
