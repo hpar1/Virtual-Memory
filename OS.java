@@ -48,7 +48,6 @@ public class OS {
         for(int i=0; i<pFile.length; i++){
             if(sc.hasNextInt()){
                 pFile[i] = sc.nextInt();
-               // System.out.println(i + " "+ pFile[i]); // FOR TESTING
             }
         }
         sc.close();
@@ -128,10 +127,6 @@ public class OS {
         p.PT[pointer] = new PageTableEntry(); // resets bits in Entry
         
         if (t.getEntry(pointer) != null) {
-            // t.getEntry(pointer).resetReference();
-            // t.getEntry(pointer).resetDirty();
-            // t.getEntry(pointer).resetvalid();
-            // t.getEntry(pointer).resetpageframe();
             String tmp = Integer.toHexString(pointer);
             if (tmp.length() == 1) {
                 tmp = "0" + tmp;
