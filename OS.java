@@ -7,7 +7,7 @@
 *   Dimitri Pierre-Louis
 */
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class OS {
     public int pointer = 0; // ptr for page replacement
@@ -62,12 +62,15 @@ public class OS {
     }
 
     // Reads page file and puts it in Physical Memory
-    public int addPage(TLBcache t, String pageNum) throws IOException{
+    public int[] addPage(TLBcache t, String pageNum) throws IOException{
         int[] pFile = new int[256];
         String frameNo = pageNum.substring(0, 2);
         String pageFile = "EditedPageFiles/" + frameNo + ".pg";
         Scanner sc = new Scanner(new File(pageFile));
-        
+        int evictedPage = -1;
+        int dirtySet = -1;
+        int[] replace;
+
         // read from .pg file and store in array
         for(int i=0; i<pFile.length; i++){
             if(sc.hasNextInt()){
@@ -75,19 +78,27 @@ public class OS {
                // System.out.println(i + " "+ pFile[i]); // FOR TESTING
             }
         }
+        sc.close();
 
         if(mem.checkfull() == true){
-            pageReplace(t, frameNo);
+            replace = pageReplace(t, frameNo);
+            mem.writeMemoryFULL(pFile, replace[0]);
+            evictedPage = replace[1];
+            dirtySet = replace[2];
+            // NEED TO SET VALID/REFERENCE/Page FrameNum
         }
         else{
             mem.writeMemory(pFile); // need to get back the index of array
+            // NEED TO SET VALID/REFERENCE/Page FrameNum
+            p.getEntry(Integer.parseInt(frameNo)).setReference();
         }
-        sc.close();
-        return 0;// CHANGE THIS
+        
+        int[] ret = {evictedPage, dirtySet};
+        return ret;
     }
 
     // clock replacement for page table
-    private int[] pageReplace(TLBcache t, String frameNo){
+    private int[] pageReplace(TLBcache t, String frameNo) throws IOException{
         int writeIndex = -1;
         int evictedPage = -1;
         int dirtySet = -1;
@@ -109,18 +120,25 @@ public class OS {
         }
         // if the page table at pointer already has (R bit == 0) and (V bit == 1)
         if(p.getEntry(pointer).getDirty() == 1){
-            pw = new PrintWriter(new File("EditedPageFiles/" + frameNo + ".pg")); // to overwrite the page file
-            sb.append(""); // add the whole array with \n
+            pw = new PrintWriter(new File("EditedPageFiles/" + Integer.toHexString(pointer) + ".pg")); // to overwrite the page file
+            int RAMindex = p.getEntry(pointer).getPageframe();
+            for(int i=0; i<mem.RAM[RAMindex].length;i++){
+                sb.append(mem.RAM[RAMindex][i] + "\n");
+            }
             pw.write(sb.toString()); // write string builder to file
             pw.close();
-            // FINISH THIS!!!!
+            dirtySet = 1; // dirty was set    
         }
         else{
-            writeIndex = p.getEntry(pointer).getPageframe(); // the open index in RAM
             dirtySet = 0; // dirty was not set
-            evictedPage = pointer;
-            p.PT[pointer] = new PageTableEntry(); // resets bits in Entry
         }
+
+        evictedPage = pointer;
+        writeIndex = p.getEntry(pointer).getPageframe(); // the open index in RAM
+        p.PT[pointer] = new PageTableEntry(); // resets bits in Entry
+        
+        // SHOULD THERE BE A POINTER++ HERE SO IT WILL START ON THE NEXT ONE NEXT TIME?????????????????????????????????
+
         int[] ret = {writeIndex, evictedPage, dirtySet};
         return ret;
     }
