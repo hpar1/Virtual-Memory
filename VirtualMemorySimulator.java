@@ -12,12 +12,14 @@ import java.io.*;
 
 public class VirtualMemorySimulator {
 	
-	public static void main(String[] args) throws FileNotFoundException{
+	public static void main(String[] args) throws IOException{
 		VirtualMemorySimulator vm = new VirtualMemorySimulator();
-		vm.simulate(args[0], "test.csv");
+		String inputFile = args[0];
+		String outputFile = inputFile.substring(0,inputFile.indexOf(".")) + ".csv";
+		vm.simulate(inputFile, outputFile);
 	}
 	
-	public void simulate(String inputFile, String outputFile) throws FileNotFoundException{
+	public void simulate(String inputFile, String outputFile) throws IOException{
 		createPgFileCopies();
 		
 		String[][] memoryAccessList = createMemoryAccessList(inputFile);
@@ -62,6 +64,8 @@ public class VirtualMemorySimulator {
 			}
 		}
 		
+		sc.close();
+		
 		return resize2DArray(accessList, i);
 	}
 	
@@ -75,16 +79,18 @@ public class VirtualMemorySimulator {
 		return newArr;
 	}
 	
-	private void outputResults(String[][] results, String fileName) throws FileNotFoundException{
+	private void outputResults(String[][] results, String fileName) throws IOException{
 		PrintWriter pw = new PrintWriter(new File(fileName));
 		pw.write("Address,r/w,value,soft,hard,hit,evicted_pg#,dirty_evicted_page\n");
 		
 		for (int i = 0; i < results.length;i++){
 			pw.write(String.join(",",results[i]));
 		}
+		
+		pw.close();
 	}
 	
-	private void createPgFileCopies() {
+	private void createPgFileCopies() throws IOException{
         String fileSource = "OriginalPageFiles/";
         String destination = "EditedPageFiles/";
         File srcDir = new File(fileSource);
