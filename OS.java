@@ -120,7 +120,11 @@ public class OS {
         writeIndex = p.getEntry(pointer).getPageframe(); // the open index in RAM
         p.PT[pointer] = new PageTableEntry(); // resets bits in Entry
         
-        //if(t.get)
+        if (t.getEntry(pointer) != null) {
+            t.getEntry(pointer).resetReference();
+            t.getEntry(pointer).resetDirty();
+            //t.getEntry(pointer).resetValid();
+        }
 
         pointer++; // iterate pointer
 
