@@ -61,16 +61,13 @@ class TLBcache{
 		}
 		return null;
 	}
-	public TlbEntry getEntryPageIndex(int IntVirtualPageNo){
+	public TlbEntry getEntry(int IntVirtualPageNo){
 		for(TlbEntry x:TLB){
 			if(IntVirtualPageNo == x.getVirtualPage()){
 				return x;
 			}
 		}
 		return null;
-	}
-	public TlbEntry getEntry(int index){
-		return TLB[index];
 	}
 	public void fifo(){
 		TlbEntry[] temp = new TlbEntry[length];
