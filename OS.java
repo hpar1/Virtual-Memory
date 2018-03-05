@@ -101,21 +101,48 @@ public class OS {
         int evictedPage = -1;
         int dirtySet = -1;
         StringBuilder sb = new StringBuilder(); // new stringbuilder to store output
-        // reset R bit until an entry is found with R bit already == 0
-        while(p.getEntry(pointer).getReference() == 1){
-            p.getEntry(pointer).resetReference();
-            // If page table entry is also in TLB reset its R bit
-            if(t.getEntry(pointer) != null){
-                t.getEntry(pointer).resetReference();
+        
+        // // reset R bit until an entry is found with R bit already == 0
+        // while(p.getEntry(pointer).getReference() == 1){
+        //     p.getEntry(pointer).resetReference();
+        //     // If page table entry is also in TLB reset its R bit
+        //     if(t.getEntry(pointer) != null){
+        //         t.getEntry(pointer).resetReference();
+        //     }
+        //     // go to next page table entry
+        //     if(pointer == p.PT.length-1){
+        //         pointer = 0;
+        //     }
+        //     else{
+        //         pointer++;
+        //     }
+        // }
+        
+        boolean cycle = true;
+        while(cycle == true){
+            // reset R bit until an entry is found with R bit already == 0
+            if(p.getEntry(pointer).getReference() == 1){
+                p.getEntry(pointer).resetReference();
+                // If page table entry is also in TLB reset its R bit
+                if (t.getEntry(pointer) != null) {
+                    t.getEntry(pointer).resetReference();
+                }
+            }
+            if((p.getEntry(pointer).getReference() == 0)&&(p.getEntry(pointer).checkValid() == true)){
+                cycle = false;
+                break;
             }
             // go to next page table entry
-            if(pointer == p.PT.length-1){
+            if (pointer == p.PT.length - 1) {
                 pointer = 0;
-            }
-            else{
+            } else {
                 pointer++;
             }
         }
+
+
+
+
         // if the page table at pointer already has (R bit == 0) and (V bit == 1)
         if(p.getEntry(pointer).getDirty() == 1){
             pw = new PrintWriter(new File("EditedPageFiles/" + Integer.toHexString(pointer) + ".pg")); // to overwrite the page file
