@@ -44,7 +44,12 @@ class PageTableEntry {
 	public void resetDirty() {
 		dirty = 0;
 	}
-
+	public void resetpageframe(){
+		pageframe = -1;
+	}
+	public void resetvalid(){
+		valid = 0;
+	}
 	public int getPageframe() {
 		if (valid == 0) {
 			return -1;

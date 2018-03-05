@@ -44,7 +44,7 @@ class TLBcache{
 		EntryNumber++;
 		makefull();
 	}
-	public void writeTLBENtry(PageTableEntry pagetableentry,String HexVirtualPageNo){
+	public void writeTLBEntry(PageTableEntry pagetableentry,String HexVirtualPageNo){
 		TLB[EntryNumber] = (TlbEntry)pagetableentry;
 		TLB[EntryNumber].setVirtualPage(HexVirtualPageNo);
 		EntryNumber++;
@@ -75,5 +75,6 @@ class TLBcache{
 			temp[i] = TLB[i+1];
 		}
 		TLB = temp;
+		EntryNumber = length-1;
 	}
 }
