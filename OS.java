@@ -21,7 +21,7 @@ public class OS {
         p = pt;
         mem = m;
     }
-    // Default constructor for testing
+    // Default constructor for testing DELETE IT LATER!!!!!!!!!!!!!
     public OS() throws IOException {
     }
 
@@ -83,14 +83,12 @@ public class OS {
         if(mem.checkfull() == true){
             replace = pageReplace(t, frameNo);
             mem.writeMemoryFULL(pFile, replace[0]);
+            p.getEntry(frameNo).writeEntry(replace[0]); // index written
             evictedPage = replace[1];
             dirtySet = replace[2];
-            // NEED TO SET VALID/REFERENCE/Page FrameNum
         }
         else{
-            mem.writeMemory(pFile); // need to get back the index of array
-            // NEED TO SET VALID/REFERENCE/Page FrameNum
-            p.getEntry(Integer.parseInt(frameNo)).setReference();
+            p.getEntry(frameNo).writeEntry(writeMemory(pFile)); // empty index written
         }
         
         int[] ret = {evictedPage, dirtySet};
