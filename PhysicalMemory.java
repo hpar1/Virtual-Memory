@@ -16,11 +16,13 @@ class PhysicalMemory {
 	public boolean checkfull(){
 		return full;
 	}
-	public void writeMemory(int[] data){
+	public int writeMemory(int[] data){
 		writeMemoryFULL(data,counter);
 		counter++;
-		if(counter == pageamount)
+		if(counter == pageamount){
 			full = true;
+		}
+		return counter-1;
 	}
 	public void writeMemoryFULL(int[] data,int index){
 		for(int i= 0;i < 256;i++){
