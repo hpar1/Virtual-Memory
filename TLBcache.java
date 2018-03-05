@@ -78,7 +78,9 @@ class TLBcache{
 		for(int i = 0;i < (length-1) ;i++){
 			temp[i] = TLB[i+1];
 		}
-		TLB = temp;
+		for(int i = 0;i < length;i++){
+			TLB[i]=temp[i];
+		}
 		EntryNumber = length-1;
 		full = false;
 	}
