@@ -132,7 +132,11 @@ public class OS {
             // t.getEntry(pointer).resetDirty();
             // t.getEntry(pointer).resetvalid();
             // t.getEntry(pointer).resetpageframe();
-            t.TLB[pointer] = new TlbEntry();
+            String tmp = Integer.toHexString(pointer);
+            if (tmp.length() == 1) {
+                tmp = "0" + tmp;
+            }
+            t.evictTlb(tmp);
         }
         
         // go to next page table entry

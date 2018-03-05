@@ -63,8 +63,7 @@ public class MMU{
     if(tlb.getEntry(virtualPageNumber) != null){
       type = 0;
       int pgFrameNum = tlb.getEntry(virtualPageNumber).getPageframe();
-      System.out.println(virtualPageNumber);///////////////////////////////
-      System.out.println(pgFrameNum + " " + offset + " " + value);//////////////
+
       mem.writeMemory(pgFrameNum, offset, value);
       tlb.getEntry(virtualPageNumber).setDirty(); 
     }

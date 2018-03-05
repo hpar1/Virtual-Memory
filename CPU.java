@@ -48,7 +48,7 @@ public class CPU {
 			
 			// 0:hit, 1:soft, 2:hard
 			int missStatus = response[0];
-			int[] osResponse = {-1, 0};
+			int[] osResponse = {-1, -1};
 			
 			
 			// Scanner sc = new Scanner(System.in);
@@ -67,12 +67,13 @@ public class CPU {
 				soft = "1";
 			if(missStatus == 2)
 				hard = "1";
-			
-			//String hit = (missStatus == 0)? "1":"0";
-			//String soft = (missStatus == 1)? "1":"0";
-			//String hard = (missStatus == 2)? "1":"0";
-			String evicted_page = Integer.toString(osResponse[0]);
+
+			String evicted_page = Integer.toHexString(osResponse[0]);
 			String dirty = Integer.toString(osResponse[1]);
+			if(osResponse[0] == -1)
+				evicted_page = "N/A";
+			if (dirty.equals("-1"))
+				dirty = "N/A";
 			
 			results[i] = new String[] 
 					{address, writeBit, value, soft, hard, hit, evicted_page, dirty};

@@ -54,6 +54,7 @@ public class VirtualMemorySimulator {
 				memoryAccess = new String[3];
 				memoryAccess[0] = writeBit;
 				memoryAccess[1] = sc.next();
+				memoryAccess[2] = "N/A";
 			}
 			
 			accessList[i] = memoryAccess;
