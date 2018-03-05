@@ -16,7 +16,7 @@ public class OS {
     private PrintWriter pw; // to write back to page file if there is a change
 
     // constructor
-    public OS(PageTable pt, TLBcache tlb, PhysicalMemory m) throws IOException {
+    public OS(PageTable pt, PhysicalMemory m) throws IOException {
         // PageTable and memory are passed in
         p = pt;
         mem = m;
@@ -120,6 +120,8 @@ public class OS {
         writeIndex = p.getEntry(pointer).getPageframe(); // the open index in RAM
         p.PT[pointer] = new PageTableEntry(); // resets bits in Entry
         
+        //if(t.get)
+
         pointer++; // iterate pointer
 
         int[] ret = {writeIndex, evictedPage, dirtySet};
