@@ -76,5 +76,6 @@ class TLBcache{
 		}
 		TLB = temp;
 		EntryNumber = length-1;
+		full = false;
 	}
 }
