@@ -14,7 +14,9 @@ public class VirtualMemorySimulator {
 	
 	public static void main(String[] args) throws FileNotFoundException{
 		VirtualMemorySimulator vm = new VirtualMemorySimulator();
-		vm.simulate(args[0], "test.csv");
+		String inputFile = args[0];
+		String outputFile = inputFile.substring(0,inputFile.indexOf(".")) + ".csv";
+		vm.simulate(inputFile, outputFile);
 	}
 	
 	public void simulate(String inputFile, String outputFile) throws FileNotFoundException{
