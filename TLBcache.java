@@ -73,6 +73,16 @@ class TLBcache{
 	public TlbEntry getTlbEntry(int index){
 		return TLB[index];
 	}
+	public void evictTlb(String HexVirtualPageNo){
+		int vmPageNo;
+		for(TlbEntry x:TLB){
+			HexVirtualPageNo = HexVirtualPageNo.substring(0, 2);
+			vmPageNo = Integer.parseInt(HexVirtualPageNo,16);
+			if(vmPageNo == x.getVirtualPage()){
+				x = new TlbEntry();
+			}
+		}
+	}
 	public void fifo(){
 
 		TlbEntry[] temp = new TlbEntry[length];
