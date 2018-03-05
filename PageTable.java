@@ -12,6 +12,9 @@ class PageTable {
 		length = 256;
 		create();
 	}
+	public int getLength(){
+		return length;
+	}
 	private void create(){
 		for(int i = 0;i < length;i++){
 			PT[i] = new PageTableEntry();

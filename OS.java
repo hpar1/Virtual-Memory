@@ -97,7 +97,7 @@ public class OS {
                 break;
             }
             // go to next page table entry
-            if (pointer == p.PT.length - 1) {
+            if (pointer == p.getLength() - 1) {
                 pointer = 0;
             } else {
                 pointer++;
@@ -133,8 +133,13 @@ public class OS {
             t.getEntry(pointer).resetvalid();
             t.getEntry(pointer).resetpageframe();
         }
-
-        pointer++; // iterate pointer
+        
+        // go to next page table entry
+        if (pointer == p.getLength() - 1) {
+            pointer = 0;
+        } else {
+            pointer++;
+        }
 
         int[] ret = {writeIndex, evictedPage, dirtySet};
         return ret;

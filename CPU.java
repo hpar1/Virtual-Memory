@@ -7,7 +7,8 @@
 *   Dimitri Pierre-Louis
 */
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class CPU {
 	
@@ -25,7 +26,7 @@ public class CPU {
 	}
 	
 	public String[][] simulate(String[][] memoryAccessList) throws IOException {
-		
+		int intValue = -1;
 		String[][] results = new String[memoryAccessList.length][];
 		// memoryAccessList: [access type, address, value]
 		
@@ -38,7 +39,8 @@ public class CPU {
 			String writeBit = memoryAccessList[i][0];
 			String address = memoryAccessList[i][1];
 			String value = memoryAccessList[i][2];
-			int intValue = Integer.parseInt(value);
+			if(writeBit.equals("1"))
+				intValue = Integer.parseInt(value);
 			
 			// [missStatus, response]
 			int[] response = (writeBit.equals("1"))? 
@@ -47,13 +49,28 @@ public class CPU {
 			// 0:hit, 1:soft, 2:hard
 			int missStatus = response[0];
 			int[] osResponse = {-1, 0};
+			System.out.println(missStatus);//////////////////////////////
+			
+			// Scanner sc = new Scanner(System.in);
+			// sc.next();
+
 			if (missStatus == 2) {
 				osResponse = os.addPage(mmu.tlb, address);
 			}
+			String hit = "0";
+			String soft = "0";
+			String hard = "0";
+
+			if(missStatus == 0)
+				hit = "1";
+			if(missStatus == 1)
+				soft = "1";
+			if(missStatus == 2)
+				hard = "1";
 			
-			String soft = (missStatus == 0)? "1":"0";
-			String hard = (missStatus == 1)? "1":"0";
-			String hit = (missStatus == 2)? "1":"0";
+			//String hit = (missStatus == 0)? "1":"0";
+			//String soft = (missStatus == 1)? "1":"0";
+			//String hard = (missStatus == 2)? "1":"0";
 			String evicted_page = Integer.toString(osResponse[0]);
 			String dirty = Integer.toString(osResponse[1]);
 			

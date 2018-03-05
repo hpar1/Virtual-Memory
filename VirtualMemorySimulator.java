@@ -51,7 +51,7 @@ public class VirtualMemorySimulator {
 				memoryAccess[2] = sc.next();
 			}
 			else {
-				memoryAccess = new String[2];
+				memoryAccess = new String[3];
 				memoryAccess[0] = writeBit;
 				memoryAccess[1] = sc.next();
 			}
@@ -81,12 +81,14 @@ public class VirtualMemorySimulator {
 	
 	private void outputResults(String[][] results, String fileName) throws IOException{
 		PrintWriter pw = new PrintWriter(new File(fileName));
-		pw.write("Address,r/w,value,soft,hard,hit,evicted_pg#,dirty_evicted_page\n");
+		StringBuilder sb = new StringBuilder();
+		sb.append("Address,r/w,value,soft,hard,hit,evicted_pg#,dirty_evicted_page\n");
 		
 		for (int i = 0; i < results.length;i++){
-			pw.write(String.join(",",results[i]));
+			sb.append(String.join(",",results[i]));
+			sb.append("\n");
 		}
-		
+		pw.write(sb.toString());
 		pw.close();
 	}
 	
