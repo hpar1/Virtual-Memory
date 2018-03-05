@@ -62,6 +62,8 @@ public class VirtualMemorySimulator {
 			}
 		}
 		
+		sc.close();
+		
 		return resize2DArray(accessList, i);
 	}
 	
@@ -82,6 +84,8 @@ public class VirtualMemorySimulator {
 		for (int i = 0; i < results.length;i++){
 			pw.write(String.join(",",results[i]));
 		}
+		
+		pw.close();
 	}
 	
 	private void createPgFileCopies() {

@@ -45,7 +45,7 @@ public class CPU {
 			
 			// 0:hit, 1:soft, 2:hard
 			int missStatus = response[0];
-			String[] osResponse = {"XX", "0"};
+			int[] osResponse = {-1, 0};
 			if (missStatus == 2) {
 				osResponse = os.addPage(mmu.tlb, address);
 			}
@@ -53,8 +53,8 @@ public class CPU {
 			String soft = (missStatus == 0)? "1":"0";
 			String hard = (missStatus == 1)? "1":"0";
 			String hit = (missStatus == 2)? "1":"0";
-			String evicted_page = osResponse[0];
-			String dirty = osResponse[1];
+			String evicted_page = Integer.toString(osResponse[0]);
+			String dirty = Integer.toString(osResponse[1]);
 			
 			results[i] = new String[] 
 					{address, writeBit, value, soft, hard, hit, evicted_page, dirty};
