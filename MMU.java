@@ -18,7 +18,7 @@ public class MMU{
 
     String hex = address.substring(2, 4);
     int offset = Integer.parseInt(hex, 16);
-    int data = 0;
+    int data = -1;
     int type;
     
     //hit

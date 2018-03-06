@@ -50,7 +50,10 @@ public class CPU {
 			}
 			else{
 				response = mmu.read(address);
-				value = Integer.toString(response[1]);
+				if(response[1] == -1)
+					value = "Not in Mem";
+				else
+					value = Integer.toString(response[1]);
 			}
 			
 			//int[] response = (writeBit.equals("1"))? 
