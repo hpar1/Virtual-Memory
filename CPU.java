@@ -69,6 +69,12 @@ public class CPU {
 
 			if (missStatus == 2) {
 				osResponse = os.addPage(mmu.tlb, address);
+				if (writeBit.equals("1")) {
+					response = mmu.write(address, intValue);
+				} else {
+					response = mmu.read(address);
+					value = Integer.toString(response[1]);
+				}
 			}
 			String hit = "0";
 			String soft = "0";
